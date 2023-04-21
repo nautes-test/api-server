@@ -1,0 +1,50 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: api-server-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - create
+  - get
+  - list
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - serviceaccounts
+  - namespaces
+  verbs:
+  - create
+  - get
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - create
+  - get
+  - list
+- apiGroups:
+  - nautes.resource.nautes.io
+  resources:
+  - clusters
+  - coderepoes
+  verbs:
+  - create
+  - get
+  - list
+- apiGroups:
+  - nautes.resource.nautes.io
+  resources:
+  - coderepoproviders
+  verbs:
+  - create
+  - get
+  - list
+
+

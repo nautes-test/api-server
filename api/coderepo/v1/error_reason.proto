@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+import "errors/errors.proto";
+
+package coderepo.v1;
+
+option go_package = "github.com/nautes-labs/api-server/api/coderepo/v1;v1";
+option java_multiple_files = true;
+option java_package = "coderepo.v1";
+
+enum ErrorReason {
+  option (errors.default_code) = 500;
+  ASSERT_ERROR = 0 [(errors.code) = 503];
+  RESOURCE_NOT_FOUND = 1 [(errors.code) = 503];
+}

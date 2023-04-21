@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package api.cluster.v1;
+
+option go_package = "github.com/nautes-labs/api-server/api/cluster/v1;v1";
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+service Cluster {
+  rpc SaveCluster (SaveRequest) returns (SaveReply) {
+    option (google.api.http) = {
+      post: "/api/v1/clusters/{clusterName}"
+      body: "body"
+    };
+  }
+  rpc DeleteCluster (DeleteRequest) returns (DeleteReply) {
+    option (google.api.http) = {
+      delete: "/api/v1/clusters/{clusterName}"
+    };
+  }
+}
+// Traefik represents the configuration for the Traefik ingress controller.
+message Traefik {
+  // httpNodePort specifies the NodePort for the HTTP port of the Traefik ingress controller.
+  string httpNodePort = 1 [json_name = "http_node_port"];
+  // httpsNodePort specifies the NodePort for the HTTPS port of the Traefik ingress controller.
+  string httpsNodePort = 2 [json_name = "https_node_port"];
+}
+
+// Vcluster represents the configuration for the virtual cluster.
+message Vcluster {
+  // httpsNodePort specifies the NodePort for the HTTPS port of the virtual cluster.
+  string httpsNodePort = 1 [json_name = "https_node_port"];
+}
+
+// SaveRequest represents a request to save a cluster.
+message SaveRequest { 
+  // Body represents the body of the save request.
+  message Body {
+    // apiServer specifies the API server address of the cluster.
+    string apiServer = 1 [json_name = "api_server", (validate.rules).string.min_len = 1];
+    // clusterKind specifies the kind of the cluster.
+    string clusterKind = 2 [json_name = "cluster_kind", (validate.rules).string.min_len = 1];
+    // clusterType specifies the type of the cluster. It can be "physical" or "virtual".
+    string clusterType = 3 [json_name = "cluster_type", (validate.rules).string = {in: ["physical", "virtual"]}];
+    // usage specifies the usage of the cluster. It can be "host" or "worker".
+    string usage = 4 [json_name = "usage", (validate.rules).string = {in: ["host", "worker"]}];
+    // hostCluster specifies the host cluster name if the cluster is a virtual cluster.
+    string hostCluster = 5 [json_name = "host_cluster"];
+    // argocdHost specifies the ArgoCD host name.
+    string argocdHost = 6 [json_name = "argocd_host"];
+    // vcluster specifies the configuration of the virtual cluster.
+    Vcluster vcluster = 7 [json_name = "vcluster"];
+    // traefik specifies the configuration of the Traefik ingress controller.
+    Traefik traefik = 9 [json_name = "traefik"];
+    // kubeconfig specifies the Kubeconfig file of the cluster.
+    string kubeconfig = 10 [json_name = "kubeconfig"];
+  }
+  // clusterName specifies the name of the cluster.
+  string clusterName = 2 [json_name = "cluster_name"];
+  // insecureSkipCheck specifies whether to skip the certificate check when connecting to the API server.
+  bool insecureSkipCheck = 3 [json_name = "insecure_skip_check"];
+  // body specifies the body of the save request.
+  Body body = 4;
+}
+
+// SaveReply represents a response to a save request.
+message SaveReply {
+  // msg specifies the message of the save response.
+  string msg = 1 [json_name = "message"];
+}
+
+// Represents a request to delete a deployment runtime manifest.
+message DeleteRequest {
+  // ProductName is the name of the product.
+  string productName = 1 [json_name = "product_name"];
+    // ClusterName is the name of the cluster.
+  string clusterName = 2 [json_name = "cluster_name"];
+  // InsecureSkipCheck specifies whether to skip security checks.  
+  bool insecureSkipCheck = 3 [json_name = "insecure_skip_check"];
+}
+
+// Represents a response to a DeleteRequest message.
+message DeleteReply {
+  // msg specifies the message of the delete response.
+  string msg = 1 [json_name = "message"];
+}

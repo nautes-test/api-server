@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-server
+  namespace: nautes
+  labels:
+    app: api-server
+    app.kubernetes.io/name: api-server
+spec:
+  type: NodePort
+  ports:
+  - port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: api-server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-server
+  namespace: nautes
+spec:
+  selector:
+    matchLabels:
+      app: api-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: api-server
+    spec:
+      serviceAccountName: api-server-manager
+      containers:
+      - name: api-server
+        image: harbor.bluzin.io/luojinxu/api-server:c5dc2d1d8c291f95349bca50aeb3ce76a41438df-60fe187f-f68f-43f0-bc61-0d819dfdee2c
+        env:
+        - name: RESOURCES_LAYOUT
+          value: /usr/local/share/resources_layout.yaml
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                ['/bin/sh', "-c", 'update-ca-certificates']
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: api-server-secret
+          mountPath: /usr/local/share/ca-certificates
+        - name: resources-layout
+          mountPath: /usr/local/share/
+          readOnly: true
+        - name: api-server-log
+          mountPath: /log
+      volumes:
+      - name: resources-layout
+        configMap:
+          name: resources-layout
+          items:
+          - key: resources_layout.yaml
+            path: resources_layout.yaml
+      - name: api-server-secret
+        projected:
+          sources:
+          - secret:
+              name: api-server-cert
+          - secret:
+              name: api-server-gitlab-ca
+      - name: api-server-log
+        persistentVolumeClaim:
+          claimName: api-server-log

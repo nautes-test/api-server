@@ -1,0 +1,148 @@
+syntax = "proto3";
+
+package api.projectpipelineruntime.v1;
+
+option go_package = "github.com/nautes-labs/api-server/api/projectpipelineruntime/v1;v1";
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+
+service ProjectPipelineRuntime {
+  rpc GetProjectPipelineRuntime (GetRequest) returns (GetReply) {
+    option (google.api.http) = {
+      get: "/api/v1/products/{productName}/projectpipelineruntimes/{projectPipelineRuntimeName}"
+    };
+  }
+  rpc ListProjectPipelineRuntimes (ListsRequest) returns (ListsReply) {
+    option (google.api.http) = {
+      get: "/api/v1/products/{productName}/projectpipelineruntimes"
+    };
+  }
+  rpc SaveProjectPipelineRuntime (SaveRequest) returns (SaveReply) {
+    option (google.api.http) = {
+      post: "/api/v1/products/{productName}/projectpipelineruntimes/{projectPipelineRuntimeName}"
+      body: "Body"
+    };
+  }
+  rpc DeleteProjectPipelineRuntime (DeleteRequest) returns (DeleteReply) {
+    option (google.api.http) = {
+      delete: "/api/v1/products/{productName}/projectpipelineruntimes/{projectPipelineRuntimeName}"
+    };
+  }
+}
+
+// Defines a pipeline and its associated event sources.
+message Pipeline {
+  // Name of the pipeline.
+  string name = 1 [json_name = "name", (validate.rules).string.min_len = 1];
+  // Name of the branch in the pipeline repository.
+  string branch = 2 [json_name = "branch", (validate.rules).string.min_len = 1];
+  // Path to the pipeline configuration file in the pipeline repository.
+  string path = 3 [json_name = "path", (validate.rules).string.min_len = 1];
+  // Event sources associated with the pipeline.
+  repeated EventSource eventSources = 4 [json_name = "event_sources", (validate.rules).repeated.min_items = 1];
+}
+
+// Request message format for getting pipeline information.
+message GetRequest {
+  // Name of the product associated with the pipeline.
+  string productName = 1 [json_name = "product_name"];
+  // Name of the pipeline runtime environment.
+  string projectPipelineRuntimeName = 2 [json_name = "project_pipeline_runtime_name"];
+}
+
+// Response message format for getting pipeline information.
+message GetReply {
+  // Name of the pipeline.
+  string name = 1 [json_name = "name"];
+  // Name of the project associated with the pipeline.
+  string project = 2 [json_name = "project"];
+  // Configuration repository of the pipeline.
+  string pipelineSource = 3 [json_name = "pipeline_source"];
+  // Other repositories outside the pipeline (optional).
+  repeated string codeSources = 4 [json_name = "code_sources"];
+  // Pipelines associated with the product.
+  repeated Pipeline pipelines = 5 [json_name = "pipelines"];
+  // Target deployment environment.
+  string destination = 6 [json_name = "destination"];
+}
+
+// Request message format for listing pipelines.
+message ListsRequest {
+  // Name of the product associated with the pipelines to be listed.
+  string productName = 1 [json_name = "product_name"];
+}
+
+// Response message format for listing pipelines.
+message ListsReply {
+  // List of pipelines.
+  repeated GetReply items = 1;
+}
+
+// Defines the event source for triggering a pipeline.
+message CalendarEventSource {
+  // Schedule for triggering the pipeline.
+  string schedule = 1 [json_name = "schedule"];
+  // Interval between pipeline runs.
+  string interval = 2 [json_name = "interval"];
+  // Dates to exclude from triggering the pipeline.
+  repeated string exclusionDates = 3 [json_name = "exclusion_dates"];
+  // Timezone for the pipeline.
+  string timezone = 4 [json_name = "timezone"];
+}
+
+// Defines the types of event sources that can trigger a pipeline.
+message EventSource {
+  // Whether to enable or disable webhook triggering for the pipeline.
+  string webhook = 1 [json_name = "webhook", (validate.rules).string = {in: ["enabled", "disabled"]}];
+  // Calendar event source for triggering the pipeline.
+  CalendarEventSource calendar = 2 [json_name = "calendar"];
+}
+
+// Proto message for saving a pipeline configuration request.
+message SaveRequest {
+  // Message containing the body of the request.
+  message Body {
+    // Name of the project associated with the pipeline.
+    string project = 1 [json_name = "project", (validate.rules).string.min_len = 1];
+    // Configuration repository of pipeline.
+    string pipelineSource = 2 [json_name = "pipeline_source", (validate.rules).string.min_len = 1];
+    // Other repository outside the pipeline(optional).
+    repeated string codeSources = 3 [json_name = "code_sources"];
+    // Pipelines defined in the configuration repository.
+    repeated Pipeline pipelines = 4 [json_name = "pipelines"];
+    // Target deployment environment.
+    string destination = 5 [json_name = "destination", (validate.rules).string.min_len = 1];
+  }
+  // Name of the product associated with the pipeline.
+  string productName = 1 [json_name = "product"];
+  // Name of the pipeline runtime associated with the project.
+  string projectPipelineRuntimeName = 2 [json_name = "project_pipeline_runtime_name"];
+  // Whether to skip checking SSL certificates when making requests.
+  bool insecureSkipCheck = 3 [json_name = "insecure_skip_check"];
+  // The body of the request.
+  Body body = 4;
+}
+
+// Proto message for the response to a save pipeline configuration request.
+message SaveReply {
+  // A message describing the status of the save request.
+  string msg = 1 [json_name = "message"];
+}
+
+// Proto message for deleting a pipeline configuration request.
+message DeleteRequest {
+  // Name of the product associated with the pipeline.
+  string productName = 1 [json_name = "product_name"];
+  // Name of the pipeline runtime associated with the project.
+  string projectPipelineRuntimeName = 2 [json_name = "project_pipeline_runtime_name"];
+  // Whether to skip checking SSL certificates when making requests.
+  bool insecureSkipCheck = 3 [json_name = "insecure_skip_check"];
+}
+
+// Proto message for the response to a delete pipeline configuration request.
+message DeleteReply {
+  // A message describing the status of the delete request.
+  string msg = 1 [json_name = "message"];
+}

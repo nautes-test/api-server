@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: tekton-ns-admin
+  namespace: repo-33
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: tekton-pipelines-controller-cluster-access
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: repo-33

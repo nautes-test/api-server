@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+package api.environment.v1;
+
+option go_package = "github.com/nautes-labs/api-server/api/environment/v1;v1";
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+
+service Environment {
+  rpc GetEnvironment (GetRequest) returns (GetReply) {
+    option (google.api.http) = {
+      get: "/api/v1/products/{productName}/environments/{environmentName}"
+    };
+  }
+  rpc ListEnvironments (ListsRequest) returns (ListsReply) {
+    option (google.api.http) = {
+      get: "/api/v1/products/{productName}/environments"
+    };
+  }
+  rpc SaveEnvironment (SaveRequest) returns (SaveReply) {
+    option (google.api.http) = {
+      post: "/api/v1/products/{productName}/environments/{environmentName}"
+      body: "body"
+    };
+  }
+  rpc DeleteEnvironment (DeleteRequest) returns (DeleteReply) {
+    option (google.api.http) = {
+      delete: "/api/v1/products/{productName}/environments/{environmentName}"
+    };
+  }
+}
+
+// Request to get information about an environment
+message GetRequest {
+    // The name of the product
+    string productName = 1 [json_name = "product_name"];
+
+    // The name of the environment
+    string environmentName = 2 [json_name = "enviroment_name"];
+}
+
+// Response for getting environment information
+message GetReply {
+  // The product name
+  string product = 1 [json_name = "product"];
+
+  // The environment name
+  string name = 2 [json_name = "name"];
+
+  // The name of the cluster that the environment belongs to
+  string cluster = 3 [json_name = "cluster"];
+
+  // The type of environment, such as "production" or "staging"
+  string envType = 4 [json_name = "env_type"];
+}
+
+// Request to list environments for a given product
+message ListsRequest {
+    // The name of the product
+    string productName = 1 [json_name = "product_name"];
+}
+
+// Response for listing environments for a given product
+message ListsReply {
+  // A list of environment information
+  repeated GetReply items = 1;
+}
+
+// Request to save changes to an environment
+message SaveRequest {
+  // The body of the request, including cluster and envType
+  message Body {
+    // The name of the cluster that the environment belongs to
+    string cluster = 1 [json_name = "cluster", (validate.rules).string.min_len = 1];
+
+    // The type of environment, such as "production" or "staging"
+    string envType = 2 [json_name = "env_type", (validate.rules).string.min_len = 1];
+  }
+
+  // The name of the product
+  string productName = 1 [json_name = "product_name"];
+
+  // The name of the environment
+  string environmentName = 2 [json_name = "environment_name"];
+
+  // Whether to skip security checks (not recommended)
+  bool insecureSkipCheck = 3 [json_name = "insecure_skip_check"];
+
+  // The body of the request, including cluster and envType
+  Body body = 4;
+}
+
+// Response for saving changes to an environment
+message SaveReply {
+  // A message indicating whether the request was successful
+  string msg = 1 [json_name = "message"];
+}
+
+// Request to delete an environment
+message DeleteRequest {
+  // The name of the product
+  string productName = 1 [json_name = "product_name"];
+
+  // The name of the environment to delete
+  string environmentName = 2 [json_name = "environment_name"];
+
+  // Whether to skip security checks (not recommended)
+  bool insecureSkipCheck = 3 [json_name = "insecure_skip_check"];
+}
+
+// Response for deleting an environment
+message DeleteReply {
+  // A message indicating whether the request was successful
+  string msg = 1 [json_name = "message"];
+}

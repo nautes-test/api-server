@@ -1,0 +1,1277 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: "api-server"
+    version: 0.0.1
+paths:
+    /api/v1/clusters/{cluster_name}:
+        post:
+            tags:
+                - Cluster
+            operationId: Cluster_SaveCluster
+            parameters:
+                - name: cluster_name
+                  in: path
+                  description: clusterName specifies the name of the cluster.
+                  required: true
+                  schema:
+                    type: string
+                - name: insecure_skip_check
+                  in: query
+                  description: insecureSkipCheck specifies whether to skip the certificate check when connecting to the API server.
+                  schema:
+                    type: boolean
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.cluster.v1.SaveRequest_Body'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.cluster.v1.SaveReply'
+        delete:
+            tags:
+                - Cluster
+            operationId: Cluster_DeleteCluster
+            parameters:
+                - name: cluster_name
+                  in: path
+                  description: ClusterName is the name of the cluster.
+                  required: true
+                  schema:
+                    type: string
+                - name: product_name
+                  in: query
+                  description: ProductName is the name of the product.
+                  schema:
+                    type: string
+                - name: insecure_skip_check
+                  in: query
+                  description: InsecureSkipCheck specifies whether to skip security checks.
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.cluster.v1.DeleteReply'
+    /api/v1/products:
+        get:
+            tags:
+                - Product
+            operationId: Product_ListProducts
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.product.v1.ListProductsReply'
+    /api/v1/products/{product_name}:
+        get:
+            tags:
+                - Product
+            operationId: Product_GetProduct
+            parameters:
+                - name: product_name
+                  in: path
+                  description: The name of the product to get
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.product.v1.GetProductReply'
+        post:
+            tags:
+                - Product
+            operationId: Product_SaveProduct
+            parameters:
+                - name: product_name
+                  in: path
+                  description: The name of the product to save
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.product.v1.SaveProductRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.product.v1.SaveProductReply'
+        delete:
+            tags:
+                - Product
+            operationId: Product_DeleteProduct
+            parameters:
+                - name: product_name
+                  in: path
+                  description: The name of the product to delete
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.product.v1.DeleteProductReply'
+    /api/v1/products/{product_name}/coderepos:
+        get:
+            tags:
+                - CodeRepo
+            operationId: CodeRepo_ListCodeRepos
+            parameters:
+                - name: product_name
+                  in: path
+                  description: The name of the product to list repositories for
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.coderepo.v1.ListsReply'
+    /api/v1/products/{product_name}/coderepos/{coderepo_name}:
+        get:
+            tags:
+                - CodeRepo
+            operationId: CodeRepo_GetCodeRepo
+            parameters:
+                - name: product_name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: coderepo_name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.coderepo.v1.GetReply'
+        post:
+            tags:
+                - CodeRepo
+            operationId: CodeRepo_SaveCodeRepo
+            parameters:
+                - name: product_name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: coderepo_name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: insecure_skip_check
+                  in: query
+                  schema:
+                    type: boolean
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.coderepo.v1.SaveRequest_Body'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.coderepo.v1.SaveReply'
+        delete:
+            tags:
+                - CodeRepo
+            operationId: CodeRepo_DeleteCodeRepo
+            parameters:
+                - name: product_name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: coderepo_name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: insecure_skip_check
+                  in: query
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.coderepo.v1.DeleteReply'
+    /api/v1/products/{product_name}/deploymentruntimes:
+        get:
+            tags:
+                - Deploymentruntime
+            operationId: Deploymentruntime_ListDeploymentRuntimes
+            parameters:
+                - name: product_name
+                  in: path
+                  description: ProductName is the name of the product.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.deploymentruntime.v1.ListsReply'
+    /api/v1/products/{product_name}/deploymentruntimes/{deploymentruntime_name}:
+        get:
+            tags:
+                - Deploymentruntime
+            operationId: Deploymentruntime_GetDeploymentRuntime
+            parameters:
+                - name: product_name
+                  in: path
+                  description: ProductName is the name of the product.
+                  required: true
+                  schema:
+                    type: string
+                - name: deploymentruntime_name
+                  in: path
+                  description: DeploymentRuntimeName is the name of the Deployment Runtime.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.deploymentruntime.v1.GetReply'
+        post:
+            tags:
+                - Deploymentruntime
+            operationId: Deploymentruntime_SaveDeploymentRuntime
+            parameters:
+                - name: product_name
+                  in: path
+                  description: ProductName is the name of the product.
+                  required: true
+                  schema:
+                    type: string
+                - name: deploymentruntime_name
+                  in: path
+                  description: DeploymentRuntimeName is the name of the Deployment Runtime.
+                  required: true
+                  schema:
+                    type: string
+                - name: insecure_skip_check
+                  in: query
+                  description: InsecureSkipCheck specifies whether to skip security checks.
+                  schema:
+                    type: boolean
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.deploymentruntime.v1.SaveRequest_Body'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.deploymentruntime.v1.SaveReply'
+        delete:
+            tags:
+                - Deploymentruntime
+            operationId: Deploymentruntime_DeleteDeploymentRuntime
+            parameters:
+                - name: product_name
+                  in: path
+                  description: ProductName is the name of the product.
+                  required: true
+                  schema:
+                    type: string
+                - name: deploymentruntime_name
+                  in: path
+                  description: DeploymentRuntimeName is the name of the Deployment Runtime.
+                  required: true
+                  schema:
+                    type: string
+                - name: insecure_skip_check
+                  in: query
+                  description: InsecureSkipCheck specifies whether to skip security checks.
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.deploymentruntime.v1.DeleteReply'
+    /api/v1/products/{product_name}/environments:
+        get:
+            tags:
+                - Environment
+            operationId: Environment_ListEnvironments
+            parameters:
+                - name: product_name
+                  in: path
+                  description: The name of the product
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.environment.v1.ListsReply'
+    /api/v1/products/{product_name}/environments/{enviroment_name}:
+        get:
+            tags:
+                - Environment
+            operationId: Environment_GetEnvironment
+            parameters:
+                - name: product_name
+                  in: path
+                  description: The name of the product
+                  required: true
+                  schema:
+                    type: string
+                - name: enviroment_name
+                  in: path
+                  description: The name of the environment
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.environment.v1.GetReply'
+    /api/v1/products/{product_name}/environments/{environment_name}:
+        post:
+            tags:
+                - Environment
+            operationId: Environment_SaveEnvironment
+            parameters:
+                - name: product_name
+                  in: path
+                  description: The name of the product
+                  required: true
+                  schema:
+                    type: string
+                - name: environment_name
+                  in: path
+                  description: The name of the environment
+                  required: true
+                  schema:
+                    type: string
+                - name: insecure_skip_check
+                  in: query
+                  description: Whether to skip security checks (not recommended)
+                  schema:
+                    type: boolean
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.environment.v1.SaveRequest_Body'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.environment.v1.SaveReply'
+        delete:
+            tags:
+                - Environment
+            operationId: Environment_DeleteEnvironment
+            parameters:
+                - name: product_name
+                  in: path
+                  description: The name of the product
+                  required: true
+                  schema:
+                    type: string
+                - name: environment_name
+                  in: path
+                  description: The name of the environment to delete
+                  required: true
+                  schema:
+                    type: string
+                - name: insecure_skip_check
+                  in: query
+                  description: Whether to skip security checks (not recommended)
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.environment.v1.DeleteReply'
+    /api/v1/products/{product_name}/projectpipelineruntimes:
+        get:
+            tags:
+                - ProjectPipelineRuntime
+            operationId: ProjectPipelineRuntime_ListProjectPipelineRuntimes
+            parameters:
+                - name: product_name
+                  in: path
+                  description: Name of the product associated with the pipelines to be listed.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.projectpipelineruntime.v1.ListsReply'
+    /api/v1/products/{product_name}/projectpipelineruntimes/{project_pipeline_runtime_name}:
+        get:
+            tags:
+                - ProjectPipelineRuntime
+            operationId: ProjectPipelineRuntime_GetProjectPipelineRuntime
+            parameters:
+                - name: product_name
+                  in: path
+                  description: Name of the product associated with the pipeline.
+                  required: true
+                  schema:
+                    type: string
+                - name: project_pipeline_runtime_name
+                  in: path
+                  description: Name of the pipeline runtime environment.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.projectpipelineruntime.v1.GetReply'
+        delete:
+            tags:
+                - ProjectPipelineRuntime
+            operationId: ProjectPipelineRuntime_DeleteProjectPipelineRuntime
+            parameters:
+                - name: product_name
+                  in: path
+                  description: Name of the product associated with the pipeline.
+                  required: true
+                  schema:
+                    type: string
+                - name: project_pipeline_runtime_name
+                  in: path
+                  description: Name of the pipeline runtime associated with the project.
+                  required: true
+                  schema:
+                    type: string
+                - name: insecure_skip_check
+                  in: query
+                  description: Whether to skip checking SSL certificates when making requests.
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.projectpipelineruntime.v1.DeleteReply'
+    /api/v1/products/{product_name}/projects:
+        get:
+            tags:
+                - Project
+            operationId: Project_ListProjects
+            parameters:
+                - name: product_name
+                  in: path
+                  description: The name of the product the projects belong to.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.project.v1.ListsReply'
+    /api/v1/products/{product_name}/projects/{project_name}:
+        get:
+            tags:
+                - Project
+            operationId: Project_GetProject
+            parameters:
+                - name: product_name
+                  in: path
+                  description: The name of the product the project belongs to.
+                  required: true
+                  schema:
+                    type: string
+                - name: project_name
+                  in: path
+                  description: The name of the project being retrieved.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.project.v1.GetReply'
+        post:
+            tags:
+                - Project
+            operationId: Project_SaveProject
+            parameters:
+                - name: product_name
+                  in: path
+                  description: The name of the product the project belongs to.
+                  required: true
+                  schema:
+                    type: string
+                - name: project_name
+                  in: path
+                  description: The name of the project being created or updated.
+                  required: true
+                  schema:
+                    type: string
+                - name: insecure_skip_check
+                  in: query
+                  description: Whether or not to skip validation.
+                  schema:
+                    type: boolean
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.project.v1.SaveRequest_Body'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.project.v1.SaveReply'
+        delete:
+            tags:
+                - Project
+            operationId: Project_DeleteProject
+            parameters:
+                - name: product_name
+                  in: path
+                  description: The name of the product the project belongs to.
+                  required: true
+                  schema:
+                    type: string
+                - name: project_name
+                  in: path
+                  description: The name of the project being deleted.
+                  required: true
+                  schema:
+                    type: string
+                - name: insecure_skip_check
+                  in: query
+                  description: Whether or not to skip validation.
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.project.v1.DeleteReply'
+    /api/v1/products/{product}/projectpipelineruntimes/{project_pipeline_runtime_name}:
+        post:
+            tags:
+                - ProjectPipelineRuntime
+            operationId: ProjectPipelineRuntime_SaveProjectPipelineRuntime
+            parameters:
+                - name: product
+                  in: path
+                  description: Name of the product associated with the pipeline.
+                  required: true
+                  schema:
+                    type: string
+                - name: project_pipeline_runtime_name
+                  in: path
+                  description: Name of the pipeline runtime associated with the project.
+                  required: true
+                  schema:
+                    type: string
+                - name: insecure_skip_check
+                  in: query
+                  description: Whether to skip checking SSL certificates when making requests.
+                  schema:
+                    type: boolean
+                - name: body.project
+                  in: query
+                  description: Name of the project associated with the pipeline.
+                  schema:
+                    type: string
+                - name: body.pipeline_source
+                  in: query
+                  description: Configuration repository of pipeline.
+                  schema:
+                    type: string
+                - name: body.code_sources
+                  in: query
+                  description: Other repository outside the pipeline(optional).
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: body.destination
+                  in: query
+                  description: Target deployment environment.
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json: {}
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.projectpipelineruntime.v1.SaveReply'
+components:
+    schemas:
+        api.cluster.v1.DeleteReply:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: msg specifies the message of the delete response.
+            description: Represents a response to a DeleteRequest message.
+        api.cluster.v1.SaveReply:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: msg specifies the message of the save response.
+            description: SaveReply represents a response to a save request.
+        api.cluster.v1.SaveRequest_Body:
+            type: object
+            properties:
+                api_server:
+                    type: string
+                    description: apiServer specifies the API server address of the cluster.
+                cluster_kind:
+                    type: string
+                    description: clusterKind specifies the kind of the cluster.
+                cluster_type:
+                    type: string
+                    description: clusterType specifies the type of the cluster. It can be "physical" or "virtual".
+                usage:
+                    type: string
+                    description: usage specifies the usage of the cluster. It can be "host" or "worker".
+                host_cluster:
+                    type: string
+                    description: hostCluster specifies the host cluster name if the cluster is a virtual cluster.
+                argocd_host:
+                    type: string
+                    description: argocdHost specifies the ArgoCD host name.
+                vcluster:
+                    $ref: '#/components/schemas/api.cluster.v1.Vcluster'
+                traefik:
+                    $ref: '#/components/schemas/api.cluster.v1.Traefik'
+                kubeconfig:
+                    type: string
+                    description: kubeconfig specifies the Kubeconfig file of the cluster.
+            description: Body represents the body of the save request.
+        api.cluster.v1.Traefik:
+            type: object
+            properties:
+                http_node_port:
+                    type: string
+                    description: httpNodePort specifies the NodePort for the HTTP port of the Traefik ingress controller.
+                https_node_port:
+                    type: string
+                    description: httpsNodePort specifies the NodePort for the HTTPS port of the Traefik ingress controller.
+            description: Traefik represents the configuration for the Traefik ingress controller.
+        api.cluster.v1.Vcluster:
+            type: object
+            properties:
+                https_node_port:
+                    type: string
+                    description: httpsNodePort specifies the NodePort for the HTTPS port of the virtual cluster.
+            description: Vcluster represents the configuration for the virtual cluster.
+        api.coderepo.v1.DeleteReply:
+            type: object
+            properties:
+                message:
+                    type: string
+            description: Represents a response to a DeleteRequest message.
+        api.coderepo.v1.GetReply:
+            type: object
+            properties:
+                product:
+                    type: string
+                name:
+                    type: string
+                project:
+                    type: string
+                webhook:
+                    $ref: '#/components/schemas/api.coderepo.v1.Webhook'
+                deployment_runtime:
+                    type: boolean
+                pipeline_runtime:
+                    type: boolean
+                git:
+                    $ref: '#/components/schemas/api.coderepo.v1.GitProject'
+            description: Define the GetReply message, which includes the product, name, project, webhook, DeploymentRuntime, PipelineRuntime, and GitProject fields.
+        api.coderepo.v1.Git:
+            type: object
+            properties:
+                gitlab:
+                    $ref: '#/components/schemas/api.coderepo.v1.Gitlab'
+                github:
+                    $ref: '#/components/schemas/api.coderepo.v1.Github'
+            description: Define the Git message, which includes the Gitlab and Github fields.
+        api.coderepo.v1.GitProject:
+            type: object
+            properties:
+                gitlab:
+                    $ref: '#/components/schemas/api.coderepo.v1.GitlabProject'
+                github:
+                    $ref: '#/components/schemas/api.coderepo.v1.GithubProject'
+            description: Define the GitProject message, which includes the GitlabProject and GithubProject fields.
+        api.coderepo.v1.Github:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: The name of the repository
+                path:
+                    type: string
+                    description: The path of the repository
+                visibility:
+                    type: string
+                    description: The visibility of the repository
+                description:
+                    type: string
+                    description: The description of the repository
+            description: Message representing a GitHub repository
+        api.coderepo.v1.GithubProject:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: The name of the project
+                path:
+                    type: string
+                    description: The path of the project
+                visibility:
+                    type: string
+                    description: The visibility of the project
+                description:
+                    type: string
+                    description: The description of the project
+                ssh_url_to_repo:
+                    type: string
+                    description: The SSH URL of the repository
+                http_url_to_repo:
+                    type: string
+                    description: The HTTP URL of the repository
+            description: Message representing a GitHub project
+        api.coderepo.v1.Gitlab:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: The name of the repository
+                path:
+                    type: string
+                    description: The path of the repository
+                visibility:
+                    type: string
+                    description: The visibility of the repository
+                description:
+                    type: string
+                    description: The description of the repository
+            description: Message representing a GitLab repository
+        api.coderepo.v1.GitlabProject:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: The name of the project
+                path:
+                    type: string
+                    description: The path of the project
+                visibility:
+                    type: string
+                    description: The visibility of the project
+                description:
+                    type: string
+                    description: The description of the project
+                ssh_url_to_repo:
+                    type: string
+                    description: The SSH URL of the repository
+                http_url_to_repo:
+                    type: string
+                    description: The HTTP URL of the repository
+            description: Message representing a GitLab project
+        api.coderepo.v1.ListsReply:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.coderepo.v1.GetReply'
+            description: Define the ListsReply message, which includes the repeated items field.
+        api.coderepo.v1.SaveReply:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: Msg is a message confirming the save.
+            description: Define the SaveReply message, which includes the msg field.
+        api.coderepo.v1.SaveRequest_Body:
+            type: object
+            properties:
+                project:
+                    type: string
+                webhook:
+                    $ref: '#/components/schemas/api.coderepo.v1.Webhook'
+                deployment_runtime:
+                    type: boolean
+                pipeline_runtime:
+                    type: boolean
+                git:
+                    $ref: '#/components/schemas/api.coderepo.v1.Git'
+            description: Define the Body message, which includes the project, webhook, DeploymentRuntime, PipelineRuntime, and Git fields.
+        api.coderepo.v1.Webhook:
+            type: object
+            properties:
+                events:
+                    type: array
+                    items:
+                        type: string
+                    description: The events that the webhook should trigger on
+            description: Message representing a webhook
+        api.deploymentruntime.v1.DeleteReply:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: Msg is a message confirming the delete.
+            description: Represents a response to a DeleteRequest message.
+        api.deploymentruntime.v1.GetReply:
+            type: object
+            properties:
+                product:
+                    type: string
+                    description: Product is the name of the product.
+                name:
+                    type: string
+                    description: Name is the name of the Deployment Runtime.
+                projects_ref:
+                    type: array
+                    items:
+                        type: string
+                    description: ProjectsRef is a list of project references.
+                manifest_source:
+                    $ref: '#/components/schemas/api.deploymentruntime.v1.ManifestSource'
+                destination:
+                    type: string
+                    description: Destination is the destination for the deployment.
+            description: GetReply is a message that returns a Deployment Runtime.
+        api.deploymentruntime.v1.ListsReply:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.deploymentruntime.v1.GetReply'
+                    description: Items is a list of Deployment Runtimes.
+            description: ListsReply is a message that returns a list of Deployment Runtimes.
+        api.deploymentruntime.v1.ManifestSource:
+            type: object
+            properties:
+                code_repo:
+                    type: string
+                    description: CodeRepo specifies the code repository of the git platform.
+                target_revision:
+                    type: string
+                    description: 'TargetRevision is the corresponding code repository revision, eg: main.'
+                path:
+                    type: string
+                    description: Path is the deploy the specified path.
+            description: ManifestSource is a message representing the source of the deployment manifest.
+        api.deploymentruntime.v1.SaveReply:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: Msg is a message confirming the save.
+            description: SaveReply is a message that confirms a Deployment Runtime has been saved.
+        api.deploymentruntime.v1.SaveRequest_Body:
+            type: object
+            properties:
+                projects_ref:
+                    type: array
+                    items:
+                        type: string
+                    description: ProjectsRef is a list of project references.
+                manifest_source:
+                    $ref: '#/components/schemas/api.deploymentruntime.v1.ManifestSource'
+                destination:
+                    type: string
+                    description: Destination is the destination for the deployment.
+            description: Body is the message body.
+        api.environment.v1.DeleteReply:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: A message indicating whether the request was successful
+            description: Response for deleting an environment
+        api.environment.v1.GetReply:
+            type: object
+            properties:
+                product:
+                    type: string
+                    description: The product name
+                name:
+                    type: string
+                    description: The environment name
+                cluster:
+                    type: string
+                    description: The name of the cluster that the environment belongs to
+                env_type:
+                    type: string
+                    description: The type of environment, such as "production" or "staging"
+            description: Response for getting environment information
+        api.environment.v1.ListsReply:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.environment.v1.GetReply'
+                    description: A list of environment information
+            description: Response for listing environments for a given product
+        api.environment.v1.SaveReply:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: A message indicating whether the request was successful
+            description: Response for saving changes to an environment
+        api.environment.v1.SaveRequest_Body:
+            type: object
+            properties:
+                cluster:
+                    type: string
+                    description: The name of the cluster that the environment belongs to
+                env_type:
+                    type: string
+                    description: The type of environment, such as "production" or "staging"
+            description: The body of the request, including cluster and envType
+        api.product.v1.DeleteProductReply:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: The message returned after deleting the product
+        api.product.v1.GetProductReply:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: The name of the product
+                git:
+                    $ref: '#/components/schemas/api.product.v1.GitGroup'
+        api.product.v1.Git:
+            type: object
+            properties:
+                gitlab:
+                    $ref: '#/components/schemas/api.product.v1.Gitlab'
+                github:
+                    $ref: '#/components/schemas/api.product.v1.Github'
+        api.product.v1.GitGroup:
+            type: object
+            properties:
+                gitlab:
+                    $ref: '#/components/schemas/api.product.v1.GitlabGroup'
+                github:
+                    $ref: '#/components/schemas/api.product.v1.GithubGroup'
+        api.product.v1.Github:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: The name of the Github repository
+                path:
+                    type: string
+                    description: The path of the Github repository
+                visibility:
+                    type: string
+                    description: The visibility of the Github repository, which can only be "public" or "private"
+                description:
+                    type: string
+                    description: The description of the Github repository
+        api.product.v1.GithubGroup:
+            type: object
+            properties:
+                path:
+                    type: string
+                    description: The path of the Github group
+                visibility:
+                    type: string
+                    description: The visibility of the Github group
+                description:
+                    type: string
+                    description: The description of the Github group
+        api.product.v1.Gitlab:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: The name of the Gitlab repository
+                path:
+                    type: string
+                    description: The path of the Gitlab repository
+                visibility:
+                    type: string
+                    description: The visibility of the Gitlab repository, which can only be "public" or "private"
+                description:
+                    type: string
+                    description: The description of the Gitlab repository
+        api.product.v1.GitlabGroup:
+            type: object
+            properties:
+                path:
+                    type: string
+                    description: The path of the Gitlab group
+                visibility:
+                    type: string
+                    description: The visibility of the Gitlab group
+                description:
+                    type: string
+                    description: The description of the Gitlab group
+        api.product.v1.ListProductsReply:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.product.v1.GetProductReply'
+                    description: The list of products
+        api.product.v1.SaveProductReply:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: The message returned after saving the product
+        api.product.v1.SaveProductRequest:
+            type: object
+            properties:
+                product_name:
+                    type: string
+                    description: The name of the product to save
+                git:
+                    $ref: '#/components/schemas/api.product.v1.Git'
+        api.project.v1.DeleteReply:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: The message being returned.
+            description: Defines the SaveReply message which is used to return a message after deleting a project.
+        api.project.v1.GetReply:
+            type: object
+            properties:
+                product:
+                    type: string
+                    description: The name of the product the project belongs to.
+                name:
+                    type: string
+                    description: The name of the project.
+                language:
+                    type: string
+                    description: The language used in the project.
+            description: Defines the GetReply message which is used to return a specific project.
+        api.project.v1.ListsReply:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.project.v1.GetReply'
+                    description: The list of projects being returned.
+            description: Defines the ListsReply message which is used to return a list of projects.
+        api.project.v1.SaveReply:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: The message being returned.
+            description: Defines the SaveReply message which is used to return a message after creating or updating a project.
+        api.project.v1.SaveRequest_Body:
+            type: object
+            properties:
+                language:
+                    type: string
+                    description: The language used in the project.
+            description: The request body for the project.
+        api.projectpipelineruntime.v1.CalendarEventSource:
+            type: object
+            properties:
+                schedule:
+                    type: string
+                    description: Schedule for triggering the pipeline.
+                interval:
+                    type: string
+                    description: Interval between pipeline runs.
+                exclusion_dates:
+                    type: array
+                    items:
+                        type: string
+                    description: Dates to exclude from triggering the pipeline.
+                timezone:
+                    type: string
+                    description: Timezone for the pipeline.
+            description: Defines the event source for triggering a pipeline.
+        api.projectpipelineruntime.v1.DeleteReply:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: A message describing the status of the delete request.
+            description: Proto message for the response to a delete pipeline configuration request.
+        api.projectpipelineruntime.v1.EventSource:
+            type: object
+            properties:
+                webhook:
+                    type: string
+                    description: Whether to enable or disable webhook triggering for the pipeline.
+                calendar:
+                    $ref: '#/components/schemas/api.projectpipelineruntime.v1.CalendarEventSource'
+            description: Defines the types of event sources that can trigger a pipeline.
+        api.projectpipelineruntime.v1.GetReply:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: Name of the pipeline.
+                project:
+                    type: string
+                    description: Name of the project associated with the pipeline.
+                pipeline_source:
+                    type: string
+                    description: Configuration repository of the pipeline.
+                code_sources:
+                    type: array
+                    items:
+                        type: string
+                    description: Other repositories outside the pipeline (optional).
+                pipelines:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.projectpipelineruntime.v1.Pipeline'
+                    description: Pipelines associated with the product.
+                destination:
+                    type: string
+                    description: Target deployment environment.
+            description: Response message format for getting pipeline information.
+        api.projectpipelineruntime.v1.ListsReply:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.projectpipelineruntime.v1.GetReply'
+                    description: List of pipelines.
+            description: Response message format for listing pipelines.
+        api.projectpipelineruntime.v1.Pipeline:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: Name of the pipeline.
+                branch:
+                    type: string
+                    description: Name of the branch in the pipeline repository.
+                path:
+                    type: string
+                    description: Path to the pipeline configuration file in the pipeline repository.
+                event_sources:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.projectpipelineruntime.v1.EventSource'
+                    description: Event sources associated with the pipeline.
+            description: Defines a pipeline and its associated event sources.
+        api.projectpipelineruntime.v1.SaveReply:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: A message describing the status of the save request.
+            description: Proto message for the response to a save pipeline configuration request.
+tags:
+    - name: Cluster
+    - name: CodeRepo
+    - name: Deploymentruntime
+    - name: Environment
+    - name: Product
+    - name: Project
+    - name: ProjectPipelineRuntime
