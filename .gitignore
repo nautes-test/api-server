@@ -45,3 +45,5 @@ coverage
 deploy/configmap.yaml
 deploy/secret.yaml
 deploy/ca.yaml
+
+pipelines
